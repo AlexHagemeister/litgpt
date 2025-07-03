@@ -284,3 +284,66 @@ This project builds upon [Lightning-AI/litgpt](https://github.com/Lightning-AI/l
 ---
 
 **For complete repository information and setup instructions, see the main [README.md](../README.md) in the repository root.**
+
+## 🗺️ Project Roadmap
+
+This section details the step-by-step execution plan, derived from the original project documents.
+
+### ✅ Phase 1A: Architecture & Verification (Complete)
+
+This phase focused on proving the mathematical and engineering soundness of the core components before any real training.
+
+1.  **Modular Reorganization**: The `lit-gpt` repository was forked, and core modules (`Embedding`, `Attention`, `MLP`, `model.py`, `config.py`) were moved into the `src/litgpt_core/` directory for unit-test granularity.
+
+2.  **Shape & Gradient Correctness Tests**:
+
+    - **Shape Test**: Asserts that a forward pass produces the correct `[B, T, V]` logit shape, catching most indexing errors.
+    - **Analytical Gradient Check**: Uses `torch.autograd.gradcheck` with `double` precision on a tiny model to verify that the backward pass is mathematically correct.
+
+3.  **Behavioral Unit-Test Suite**: A comprehensive `pytest` suite was developed to ensure:
+
+    - The causal mask prevents attention to future tokens.
+    - `model.eval()` mode produces deterministic outputs (i.e., dropout is disabled).
+    - The model's parameter count matches the specification.
+
+4.  **Smoke Benchmark**: A small, 116K parameter model was overfit on a single batch of data. The resulting 48.7% loss reduction confirmed that gradient flow was working correctly end-to-end.
+
+5.  **Continuous Integration**: The original plan specifies a GitHub Actions CI hook to run the entire test suite on every commit. This has not been implemented yet but is planned for future work.
+
+### 🔄 Phase 1B: Baseline Training (In Progress)
+
+This phase focuses on training the verified model to a known reference loss on a public dataset, ensuring it learns effectively.
+
+1.  **Dataset Acquisition & Tokenization**:
+
+    - **Corpus**: The Tiny-Shakespeare dataset (`input.txt`) is used as the public-domain training corpus.
+    - **Tokenization**: A SentencePiece BPE model with a 16k vocabulary (`sp16k.model`) is trained on the raw text.
+    - **Data Module**: A PyTorch Lightning `DataModule` handles loading and preparing tokenized data splits (95% train, 5% val).
+
+2.  **Hydra Configuration**: All hyperparameters are externalized into modular YAML files under the `configs/` directory, allowing for experiments to be run via CLI one-liners without changing Python code.
+
+3.  **Baseline Hyperparameters**: The training run uses the following configuration to match the reference implementation:
+
+| Hyper-parameter  | Value                     |
+| :--------------- | :------------------------ |
+| `n_layer`        | 6                         |
+| `n_head`         | 6                         |
+| `n_embd`         | 384                       |
+| `d_ff`           | 1536                      |
+| `block_size`     | 256                       |
+| `vocab_size`     | 16,000                    |
+| **Optimizer**    | AdamW (β₁ 0.9, β₂ 0.95)   |
+| **LR Schedule**  | Cosine, 200 warm-up steps |
+| **Batch Tokens** | 8192                      |
+| **Precision**    | **fp32**                  |
+| **Flash-Attn**   | **Disabled**              |
+
+4.  **Training Execution**: The baseline training will be executed on a RunPod A100 GPU, with a target `val_loss` of **≤ 1.55**. The expected training time is ~7-8 minutes.
+
+5.  **Metric Logging**: Key metrics, including `val_loss`, `tokens_per_sec`, and `gpu_memory`, will be logged to a local CSV file for analysis.
+
+6.  **Tagging & Reproducibility**: Upon successful completion, the repository will be tagged `baseline-v0`, with the final metrics and environment details committed to ensure full reproducibility.
+
+---
+
+**For complete repository information and setup instructions, see the main [README.md](../README.md) in the repository root.**
