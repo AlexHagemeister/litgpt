@@ -8,11 +8,11 @@ This directory contains the Light Compute Project implementation - a specialized
 
 The Light Compute Project demonstrates production-ready LLM training with:
 
-- **Modular Architecture**: Clean, testable, single-responsibility components
-- **Comprehensive Testing**: 23/23 unit tests with analytical gradient verification
-- **Automated Deployment**: Multi-region GPU deployment with cost controls
-- **Reproducibility**: Fixed seeds, environment capture, and audit trails
-- **Engineering Best Practices**: CI/CD, documentation, and error handling
+- **Modular Architecture**: Clean, testable, single-responsibility components. _Motivation: Isolate components for granular unit-testing and easier debugging._
+- **Comprehensive Testing**: 23/23 unit tests with analytical gradient verification. _Motivation: Burn down all correctness uncertainty before experimenting with new architectural ideas._
+- **Automated Deployment**: Multi-region GPU deployment with cost controls. _Motivation: Create a "push-button" system to run reproducible experiments with minimal manual intervention._
+- **Reproducibility**: Fixed seeds, environment capture, and audit trails. _Motivation: Ensure that baseline results form a reliable control arm for future experiments._
+- **Engineering Best Practices**: CI/CD, documentation, and error handling.
 
 ## 📁 Project Structure
 
@@ -209,3 +209,10 @@ This project builds upon [Lightning-AI/litgpt](https://github.com/Lightning-AI/l
 ---
 
 **For complete repository information and setup instructions, see the main [README.md](../README.md) in the repository root.**
+
+### Performance Validation
+
+- **Smoke Test**: 48.7% loss reduction in 20 iterations. _Verifies that gradient flow is working correctly end-to-end._
+- **Gradient Flow**: Verified through all layers via analytical `gradcheck`. _Catches mathematical errors in the backward pass._
+- **Reproducibility**: Consistent results with fixed seeds.
+- **CI/CD**: <5 minute pipeline runtime.

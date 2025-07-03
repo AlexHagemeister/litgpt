@@ -25,12 +25,12 @@ This project implements a modular, production-ready GPT training system with com
 - **Comprehensive Testing**: 23/23 unit tests passing
 
   - Shape correctness tests for all model components
-  - Analytical gradient verification via PyTorch's gradcheck
+  - Analytical gradient verification via PyTorch's gradcheck. _Rationale: Catches mathematical errors in the backward pass before any real training is done._
   - Behavioral tests (causal masking, determinism, parameter counting)
 
 - **Smoke Test Validation**: Training capability verified
 
-  - 48.7% loss reduction in 20 iterations
+  - 48.7% loss reduction in 20 iterations. _Rationale: Confirms that activation and gradient flow are working correctly end-to-end by forcing the model to overfit a single batch._
   - 116,480 parameter model successfully trained
   - Gradient flow confirmed through all layers
 
