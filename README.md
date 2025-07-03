@@ -4,157 +4,157 @@
 
 > 🔗 **Based on [Lightning-AI/litgpt](https://github.com/Lightning-AI/litgpt)** - This is a specialized fork focused on modular architecture, comprehensive testing, and production-ready training pipelines.
 
+## 🚀 Quick Start (Recommended: uv)
+
+### 1. Install [uv](https://github.com/astral-sh/uv)
+
+```bash
+curl -Ls https://astral.sh/uv/install.sh | sh
+# or
+brew install astral-sh/uv/uv
+```
+
+### 2. Create and Activate a Virtual Environment
+
+```bash
+uv venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install All Dependencies
+
+```bash
+uv pip install -e .
+uv pip install hydra-core wandb sentencepiece pytest
+```
+
+### 4. Run Tests and Scripts
+
+```bash
+python -m pytest light_compute_project/tests/unit/ -v
+python light_compute_project/scripts/smoke_test.py
+```
+
+### 5. Configure Deployment (Optional)
+
+```bash
+# For GPU training deployment
+cp secrets.env.template secrets.env
+# Edit secrets.env with your RunPod API key and GitHub PAT
+```
+
+---
+
 ## 🎯 Project Overview
 
-This project demonstrates production-ready LLM training with:
+This repository contains:
+
+- **Original LitGPT**: Lightning-AI's litgpt implementation (unchanged)
+- **Light Compute Project**: Our modular implementation in `light_compute_project/`
+
+The Light Compute Project demonstrates production-ready LLM training with:
+
 - **Modular Architecture**: Clean, testable, single-responsibility components
 - **Comprehensive Testing**: 23/23 unit tests with analytical gradient verification
 - **Automated Deployment**: Multi-region GPU deployment with cost controls
 - **Reproducibility**: Fixed seeds, environment capture, and audit trails
 - **Engineering Best Practices**: CI/CD, documentation, and error handling
 
-## 🚀 Quick Start
+## 📁 Repository Structure
 
-### Prerequisites
-```bash
-# Python 3.11+ with conda
-conda create -n litgpt python=3.11 -y
-conda activate litgpt
+```
+litgpt/                           # Original Lightning-AI code (unchanged)
+├── litgpt/                       # Original implementation
+├── config_hub/                   # Original model configs
+├── extensions/                   # Original extensions
+├── tutorials/                    # Original tutorials
+├── tests/                        # Original test suite
+├── .github/                      # CI/CD (upstream)
+├── .azure/                       # Azure config (upstream)
+├── .devcontainer/                # Dev container (upstream)
+├── LICENSE                       # Apache 2.0 (upstream)
+├── CITATION.cff                  # Citation (upstream)
+├── .gitignore                    # Git ignore (upstream)
+├── .pre-commit-config.yaml       # Pre-commit (upstream)
+├── pyproject.toml                # Project config (upstream)
+└── README.md                     # This file
 
-# Install dependencies
-pip install -e .
-pip install hydra-core wandb sentencepiece
+light_compute_project/            # 🆕 Our project namespace
+├── README.md                     # Project-specific README
+├── environment_info.md           # Environment specifications
+├── docs/                         # All project documentation
+│   ├── PROJECT_STATUS.md         # Detailed project status
+│   ├── DEPLOYMENT_GUIDE.md       # Deployment procedures
+│   ├── CHANGELOG.md              # Version history
+│   ├── baseline_summary.md       # Training results
+│   ├── README_PHASE1A.md         # Phase 1A documentation
+│   └── STRUCTURE_MIGRATION_SUMMARY.md
+├── scripts/                      # All project scripts
+│   ├── train.py                  # Main training script
+│   ├── test_training.py          # Training verification
+│   ├── multi_region_deploy.py    # GPU deployment
+│   ├── runpod_exec_training.py   # Alternative deployment
+│   ├── reproducibility_audit.py  # Environment capture
+│   └── smoke_test.py             # Architecture verification
+├── configs/                      # Project configurations
+├── src/                          # Project source code
+│   └── litgpt_core/              # Modular GPT implementation
+├── tests/                        # Project test suite
+│   └── unit/                     # Unit tests (23 tests)
+├── metrics/                      # Training metrics and results
+└── data/                         # Dataset and processing
 ```
 
-### Local Testing
-```bash
-# Run comprehensive test suite
-python -m pytest tests/unit/ -v
+## 📝 Environment Management
 
-# Verify training pipeline
-python test_training.py
-
-# Run smoke test
-python smoke_test.py
-```
-
-### GPU Training Deployment
-```bash
-# Configure credentials in secrets.env
-cp secrets.env.template secrets.env
-# Edit with your GitHub PAT and RunPod API key
-
-# Deploy baseline training
-python multi_region_deploy.py
-```
+- **Preferred**: [uv](https://github.com/astral-sh/uv) (fast, modern, pyproject.toml-native)
+- **Legacy**: pip/conda also supported, but uv is recommended for all workflows
 
 ## 📊 Project Status
 
 ### ✅ Phase 1A: Architecture Verification - COMPLETE
+
 - **Tag**: `phase1A-complete`
 - **Achievement**: Modular GPT implementation with 23/23 tests passing
 - **Verification**: Smoke test with 48.7% loss reduction
-- **Infrastructure**: CI/CD pipeline and comprehensive documentation
 
 ### 🔄 Phase 1B: Baseline Training - IN PROGRESS
+
 - **Target**: val_loss ≤ 1.55 on A100/L40S GPU
 - **Infrastructure**: Complete training pipeline with all guard-rails
-- **Deployment**: Multi-region strategy with automated cost controls
 - **Expected**: baseline-v0 tag upon successful completion
 
-## 🏗️ Architecture
-
-### Modular Components
-```
-src/litgpt_core/
-├── config.py              # Configuration management
-├── model.py               # Core GPT model implementation  
-├── attention.py           # Attention mechanisms and KV cache
-├── mlp.py                 # Feed-forward network variants
-├── embedding.py           # Token embedding layers
-├── lightning_module.py    # PyTorch Lightning wrapper
-└── data_module.py         # Data loading and processing
-```
-
-### Training Pipeline
-- **Model**: 6 layers, 6 heads, 384 embedding (~23M parameters)
-- **Dataset**: Tiny-Shakespeare with SentencePiece tokenization (16k vocab)
-- **Training**: 3000 steps, fp32 precision, Flash-Attention disabled
-- **Validation**: Every 500 steps targeting val_loss ≤ 1.55
-- **Hardware**: A100 40GB/80GB or L40S 48GB
-
-## 🛡️ Guard-Rails and Safety
-
-### Training Requirements
-- ✅ **Precision**: fp32 with Flash-Attention disabled
-- ✅ **Target Metric**: val_loss ≤ 1.55 monitoring
-- ✅ **Budget Control**: $20 hard cap with 5-minute polling
-- ✅ **Reproducibility**: Fixed seeds (PYTHONHASHSEED=1337)
-- ✅ **Checkpoints**: Latest 3 only retention policy
-- ✅ **Logging**: Complete CSV metrics and audit trails
-
-### Deployment Safety
-- **Cost Monitoring**: Real-time budget tracking
-- **Auto-Shutdown**: Pod termination after completion
-- **Multi-Region**: Improved GPU availability
-- **Error Recovery**: Robust retry logic and cleanup
+> **For detailed project information, architecture, and testing procedures, see [`light_compute_project/README.md`](light_compute_project/README.md)**
 
 ## 📁 Key Files
 
-### Core Implementation
-- `src/litgpt_core/` - Modular GPT implementation
-- `tests/unit/` - Comprehensive test suite (23 tests)
-- `configs/` - Hydra configuration files
+### Original LitGPT (Unchanged)
 
-### Training and Deployment
-- `train.py` - Main training script
-- `multi_region_deploy.py` - Automated GPU deployment
-- `test_training.py` - Local verification script
+- `litgpt/` - Original Lightning-AI implementation
+- `config_hub/` - Original model configurations
+- `extensions/` - Original extensions
+- `tutorials/` - Original tutorials
+- `tests/` - Original test suite
+
+### Light Compute Project
+
+- `light_compute_project/src/litgpt_core/` - Modular GPT implementation
+- `light_compute_project/tests/unit/` - Comprehensive test suite (23 tests)
+- `light_compute_project/configs/` - Hydra configuration files
+- `light_compute_project/scripts/` - Training and deployment scripts
+- `light_compute_project/docs/` - Project documentation
 
 ### Documentation
-- `PROJECT_STATUS.md` - Detailed project status and progress
-- `DEPLOYMENT_GUIDE.md` - Deployment procedures and troubleshooting
-- `CHANGELOG.md` - Version history and achievements
 
-## 🧪 Testing and Verification
-
-### Test Coverage
-```bash
-# Shape correctness (all model components)
-python -m pytest tests/unit/test_model_shapes.py -v
-
-# Gradient verification (analytical gradcheck)  
-python -m pytest tests/unit/test_gradients.py -v
-
-# Behavioral tests (causal masking, determinism)
-python -m pytest tests/unit/test_behavioral.py -v
-```
-
-### Performance Validation
-- **Smoke Test**: 48.7% loss reduction in 20 iterations
-- **Gradient Flow**: Verified through all layers
-- **Reproducibility**: Consistent results with fixed seeds
-- **CI/CD**: <5 minute pipeline runtime
-
-## 🎯 Success Criteria
-
-### Phase 1A ✅
-- [x] All unit tests pass (23/23)
-- [x] Gradcheck verification successful  
-- [x] Smoke test achieves >1.0 loss reduction
-- [x] CI pipeline <5 minutes
-- [x] Tag `phase1A-complete` pushed
-
-### Phase 1B 🔄
-- [ ] Real GPU training execution
-- [ ] val_loss ≤ 1.55 achieved
-- [ ] All guard-rails maintained
-- [ ] metrics/baseline.csv committed
-- [ ] Tag `baseline-v0` pushed
+- `light_compute_project/docs/PROJECT_STATUS.md` - Detailed project status and progress
+- `light_compute_project/docs/DEPLOYMENT_GUIDE.md` - Deployment procedures and troubleshooting
+- `light_compute_project/docs/CHANGELOG.md` - Version history and achievements
+- `light_compute_project/environment_info.md` - Environment specifications
 
 ## 🔗 Related Work
 
 This project builds upon [Lightning-AI/litgpt](https://github.com/Lightning-AI/litgpt) with focus on:
+
 - **Modular Architecture**: Enhanced component separation
 - **Testing Infrastructure**: Comprehensive verification suite
 - **Production Readiness**: Automated deployment and monitoring
@@ -164,12 +164,13 @@ This project builds upon [Lightning-AI/litgpt](https://github.com/Lightning-AI/l
 
 - **Repository**: https://github.com/AlexHagemeister/litgpt
 - **Issues**: GitHub Issues for bug reports and questions
-- **Documentation**: Comprehensive guides in repository
+- **Documentation**: Comprehensive guides in `light_compute_project/docs/`
 - **CI Status**: GitHub Actions for automated testing
 
 ---
 
-**License**: Apache 2.0 (inherited from Lightning-AI/litgpt)  
-**Maintainer**: Research project by Manus AI Agent  
-**Last Updated**: January 7, 2025
+**License**: Apache 2.0 (inherited from Lightning-AI/litgpt)
 
+**Maintainer**: Research project by Alex Hagemeister
+
+**Last Updated**: January 7, 2025

@@ -1,24 +1,78 @@
-.ipynb_checkpoints/
-__pycache__
-.idea
-.DS_Store
-*.egg-info
-build
-dist
-.venv
-.vscode
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# data
-data
-datasets
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Project-specific
+data/
+datasets/
 !litgpt/data
 !tests/data
-checkpoints
-out
-wandb
+checkpoints/
+out/
+wandb/
 events.out.tfevents*
 
-# test artifacts from tests/test_readme.py
+# Test artifacts from tests/test_readme.py
 **/custom_finetuning_dataset.json
 client.py
 **/custom_texts/
+
+# Project results
+smoke_test_results.json
+*.log
+*.tmp
+*.bak
+
+# Environment files
+.env
+secrets.env

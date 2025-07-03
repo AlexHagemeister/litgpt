@@ -11,7 +11,7 @@ import torch.nn.functional as F
 from torch.optim import AdamW
 
 # Add src to path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from litgpt_core.model import GPT
 from litgpt_core.config import Config
