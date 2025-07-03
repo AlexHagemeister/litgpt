@@ -14,6 +14,12 @@ The Light Compute Project demonstrates production-ready LLM training with:
 - **Reproducibility**: Fixed seeds, environment capture, and audit trails. _Motivation: Ensure that baseline results form a reliable control arm for future experiments._
 - **Engineering Best Practices**: CI/CD, documentation, and error handling.
 
+## Vision and Execution
+
+This project's execution remained highly faithful to its "north-star" vision: building a modular, easily tinkerable GPT-style decoder that could be validated and trained in minutes. The core architecture, comprehensive testing, and configuration-driven design all directly reflect this original goal.
+
+The most significant change from the original plan was an intentional evolution in the deployment strategy. While the initial idea was a simple, single-script launcher, the project evolved to use a sophisticated, multi-region, multi-GPU deployment system (`multi_region_deploy.py`). This provides greater resilience, cost-efficiency, and automation, moving from a simple playbook to a production-ready deployment system.
+
 ## 📁 Project Structure
 
 ```
