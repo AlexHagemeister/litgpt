@@ -25,14 +25,10 @@ The most significant change from the original plan was an intentional evolution 
 ```
 light_compute_project/
 ├── README.md                     # This file
-├── environment_info.md           # Environment specifications
 ├── docs/                         # All project documentation
 │   ├── PROJECT_STATUS.md         # Detailed project status
 │   ├── DEPLOYMENT_GUIDE.md       # Deployment procedures
-│   ├── CHANGELOG.md              # Version history
-│   ├── baseline_summary.md       # Training results
-│   ├── README_PHASE1A.md         # Phase 1A documentation
-│   └── COMPREHENSIVE_REORGANIZATION_SUMMARY.md
+│   └── CHANGELOG.md              # Version history
 ├── scripts/                      # All project scripts
 │   ├── train.py                  # Main training script
 │   ├── test_training.py          # Training verification
@@ -51,7 +47,7 @@ light_compute_project/
 
 ## 🚀 Quick Start
 
-> **Note**: For complete setup instructions, see the main [README.md](../README.md) in the repository root.
+> **Note**: This project uses `uv` for environment management.
 
 ### Environment Setup
 
