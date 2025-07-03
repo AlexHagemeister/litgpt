@@ -1,0 +1,36 @@
+# Tiny model configuration matching Phase 1B baseline hyperparameters
+# Based on nanoGPT "tiny" + Lit-GPT tiny Shakespeare config
+
+# Architecture
+n_layer: 6
+n_head: 6
+n_embd: 384
+d_ff: 1536  # 4 * n_embd
+block_size: 256
+vocab_size: 16000
+
+# Attention
+head_size: 64  # n_embd // n_head
+n_query_groups: 6  # Same as n_head for standard attention
+rotary_percentage: 0.25
+
+# MLP
+mlp_class_name: "GptNeoxMLP"
+gelu_approximate: "none"
+intermediate_size: 1536
+
+# Normalization
+norm_class_name: "LayerNorm"
+norm_eps: 1e-5
+norm_1: true
+norm_2: true
+
+# Other settings
+bias: true
+lm_head_bias: false
+parallel_residual: true
+scale_embeddings: false
+
+# Derived settings (computed automatically)
+padded_vocab_size: 16000  # Already a nice round number
+

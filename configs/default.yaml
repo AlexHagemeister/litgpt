@@ -1,0 +1,35 @@
+# Default configuration for LitGPT training
+# Use with: python train.py +model=tiny +data=tinyshake +optim=adamw
+
+defaults:
+  - model: tiny
+  - data: tinyshake  
+  - optim: adamw
+  - trainer: default
+  - _self_
+
+# Global settings
+seed: 1337
+precision: fp32
+
+# Reproducibility
+randomness:
+  pythonhashseed: 1337
+  global_seed: 1337
+
+# Paths
+data_dir: data
+tokenizer_path: data/raw/sp16k.model
+checkpoint_dir: checkpoints
+
+# Logging
+log_every_n_steps: 10
+val_check_interval: 500
+
+# Hydra settings
+hydra:
+  run:
+    dir: outputs/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  job:
+    chdir: false
+

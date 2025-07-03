@@ -1,0 +1,44 @@
+# PyTorch Lightning trainer configuration
+
+# Training settings
+max_steps: 3000
+precision: "32-true"  # fp32 for baseline
+accelerator: "auto"
+devices: "auto"
+
+# Validation
+val_check_interval: 500
+check_val_every_n_epoch: null
+limit_val_batches: 1.0
+
+# Logging
+log_every_n_steps: 10
+enable_progress_bar: true
+enable_model_summary: true
+
+# Checkpointing
+enable_checkpointing: true
+default_root_dir: "checkpoints"
+
+# Callbacks will be added programmatically:
+# - ModelCheckpoint (every 500 steps)
+# - LearningRateMonitor
+# - Timer
+
+# Performance
+gradient_clip_val: 1.0
+gradient_clip_algorithm: "norm"
+accumulate_grad_batches: 1
+
+# Reproducibility
+deterministic: false  # Set to true for full reproducibility (slower)
+benchmark: true  # Optimize for consistent input sizes
+
+# Debugging (disable for production)
+fast_dev_run: false
+overfit_batches: 0
+limit_train_batches: 1.0
+
+# Profiling (disable for production)
+profiler: null
+

@@ -1,0 +1,23 @@
+# AdamW optimizer configuration matching Phase 1B baseline
+
+# Optimizer
+name: "AdamW"
+lr: 3e-4
+betas: [0.9, 0.95]
+eps: 1e-8
+weight_decay: 0.1
+
+# Learning rate schedule
+scheduler:
+  name: "cosine"
+  warmup_steps: 200
+  max_steps: 3000
+  min_lr_ratio: 0.1
+
+# Gradient settings
+gradient_clip_val: 1.0
+gradient_clip_algorithm: "norm"
+
+# Precision settings (overridden by global precision)
+precision: "fp32"  # Baseline uses fp32, no Flash-Attention
+

@@ -1,0 +1,52 @@
+betas: !!python/tuple
+- 0.9
+- 0.95
+learning_rate: 0.0003
+max_steps: 1000
+min_lr_ratio: 0.1
+model_config: !!python/object:litgpt_core.config.Config
+  attention_logit_softcapping: null
+  attention_scores_scalar: null
+  bias: true
+  block_size: 256
+  final_logit_softcapping: null
+  gelu_approximate: none
+  head_size: 64
+  hf_config: {}
+  intermediate_size: 1536
+  lm_head_bias: false
+  mlp_class: !!python/name:litgpt_core.mlp.GptNeoxMLP ''
+  mlp_class_name: GptNeoxMLP
+  moe_intermediate_size: null
+  n_embd: 384
+  n_expert: 0
+  n_expert_per_token: 0
+  n_head: 6
+  n_layer: 6
+  n_query_groups: 6
+  name: ''
+  norm_1: true
+  norm_2: true
+  norm_class: !!python/name:torch.nn.modules.normalization.LayerNorm ''
+  norm_class_name: LayerNorm
+  norm_eps: 1.0e-05
+  norm_qk: false
+  norm_qk_type: default
+  padded_vocab_size: 16000
+  padding_multiple: 512
+  parallel_residual: true
+  post_attention_norm: false
+  post_mlp_norm: false
+  rope_adjustments: null
+  rope_base: 10000
+  rope_condense_ratio: 1
+  rope_indices: null
+  rope_n_elem: 16
+  rotary_percentage: 0.25
+  scale_embeddings: false
+  shared_attention_norm: false
+  sliding_window_indices: null
+  sliding_window_size: null
+  vocab_size: 16000
+warmup_steps: 200
+weight_decay: 0.1
